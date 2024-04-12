@@ -28,7 +28,9 @@ public class CafeMain {
     private LinkedHashMap<Integer, Order> orderHistory = new LinkedHashMap<>();
     private Order currentOrder;
 
-    private CafeMain(){}
+    private CafeMain(){
+        createOrder();
+    }
 
     public static CafeMain getInstance() {
         if (main == null) {
