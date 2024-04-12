@@ -117,7 +117,7 @@ public class Order {
      * @return tax amount
      **/
     public double tax() {
-        return (double) Math.round(subtotal * STATE_TAX * 100.0) / 100;
+        return (double) Math.round(getSubtotal() * STATE_TAX * 100.0) / 100;
     }
 
     /**
@@ -126,6 +126,6 @@ public class Order {
      * @return order total
      **/
     public double getTotal() {
-        return subtotal + tax();
+        return getSubtotal() + tax();
     }
 }
