@@ -30,7 +30,7 @@ public class SandwichViewController extends AppCompatActivity {
 //    private ToggleGroup breadToggleGroup = new ToggleGroup();
 //    private ToggleGroup proteinToggleGroup = new ToggleGroup();
 //
-    private CafeViewController app;
+    private CafeMain main = CafeMain.getInstance();
     private Sandwich sandwich = new Sandwich();
 
 
@@ -41,6 +41,14 @@ public class SandwichViewController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.sandwich_view);
+
+
+        System.out.println("- Sandwich -");
+        System.out.println(main.getCurrentOrder().getOrderNumber());
+        System.out.println(main.addItem(new Sandwich(SandwichBread.SOUR_DOUGH, SandwichProtein.CHICKEN, new ArrayList<>()), 2));
+        System.out.println(main.getCurrentOrder().getSubtotal());
+        System.out.println(main.getCurrentOrder().tax());
+        System.out.println(main.getCurrentOrder().getTotal());
     }
 
 

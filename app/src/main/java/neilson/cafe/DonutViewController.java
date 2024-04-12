@@ -37,6 +37,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 //
@@ -69,7 +70,7 @@ public class DonutViewController extends AppCompatActivity {
 //    public ListView preOrders;
 //    private ToggleGroup donutTypeToggleGroup = new ToggleGroup();
 //
-    private CafeViewController app;
+    private CafeMain main = CafeMain.getInstance();
 //    private ObservableList<DonutFlavor> flavors = FXCollections.observableArrayList();
 //    private ObservableList<Donut> preOrdersList = FXCollections.observableArrayList();
     private Donut donut = new Donut();
@@ -83,6 +84,18 @@ public class DonutViewController extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
 
         setContentView(R.layout.donut_view);
+
+
+
+        System.out.println("- Donut -");
+        System.out.println(main.getCurrentOrder().getOrderNumber());
+        System.out.println(main.addItem(new Donut(DonutType.CAKE, DonutFlavor.CHOCOLATE), 2));
+        System.out.println(main.getCurrentOrder().getSubtotal());
+        System.out.println(main.getCurrentOrder().tax());
+        System.out.println(main.getCurrentOrder().getTotal());
+
+
+
     }
 
 //

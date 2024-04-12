@@ -5,6 +5,7 @@ package neilson.cafe;
 //import javafx.scene.image.ImageView;
 //import javafx.scene.layout.*;
 //
+
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Optional;
 //
+
 /**
  * Controller class used in coffee view to place orders for coffee
  *
@@ -20,7 +22,7 @@ import java.util.Optional;
  */
 
 public class CoffeeViewController extends AppCompatActivity {
-//    @FXML
+    //    @FXML
 //    public ImageView coffeeImage;
 //    @FXML
 //    public Spinner<Integer> coffeeQuantitySpinner;
@@ -38,7 +40,7 @@ public class CoffeeViewController extends AppCompatActivity {
 //    private ArrayList<CheckBox> coffeeAddOnOptions = new ArrayList<>();
 //    private ToggleGroup coffeeSizeToggleGroup = new ToggleGroup();
 //
-    private CafeViewController app;
+    private CafeMain main = CafeMain.getInstance();
     private Coffee coffee;
 
 
@@ -47,11 +49,15 @@ public class CoffeeViewController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.coffee_view);
+
+
+        System.out.println("- Coffee -");
+        System.out.println(main.getCurrentOrder().getOrderNumber());
+        System.out.println(main.addItem(new Coffee(CoffeeSize.SHORT, new ArrayList<>()), 2));
+        System.out.println(main.getCurrentOrder().getSubtotal());
+        System.out.println(main.getCurrentOrder().tax());
+        System.out.println(main.getCurrentOrder().getTotal());
     }
-
-
-
-
 
 
 //
