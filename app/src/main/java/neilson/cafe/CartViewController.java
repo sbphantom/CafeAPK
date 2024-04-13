@@ -1,5 +1,7 @@
 package neilson.cafe;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Map;
@@ -12,6 +14,15 @@ import java.util.Map;
 public class CartViewController extends AppCompatActivity {
     private CafeViewController app;
     private Order order;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        EdgeToEdge.enable(this);
+        setContentView(R.layout.order_view);
+
+    }
 //    private ObservableMap<MenuItem, Integer> cart;
 
 

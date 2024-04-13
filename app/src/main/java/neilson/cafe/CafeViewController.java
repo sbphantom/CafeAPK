@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -170,6 +171,13 @@ public class CafeViewController  extends AppCompatActivity{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Button button = (Button) findViewById(R.id.checkout_button);
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(CafeViewController.this, CartViewController.class);
+            startActivity(intent);
+        });
+
     }
 
 
