@@ -1,16 +1,24 @@
 package neilson.cafe;
+
 //
 //import javafx.fxml.FXML;
 //import javafx.scene.control.*;
 //import javafx.scene.layout.*;
 //
 import android.os.Bundle;
+import android.widget.ListView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
+
+import neilson.cafe.sandwichAdapters.AddOnAdapter;
+import neilson.cafe.sandwichAdapters.BreadAdapter;
+import neilson.cafe.sandwichAdapters.ProteinAdapter;
 //
 /**
  * This class serves as the main controller for the sandwich ordering window.
@@ -19,7 +27,16 @@ import java.util.Optional;
  * @author Adeola Asimolowo, Danny Onuorah
  */
 public class SandwichViewController extends AppCompatActivity {
-//    @FXML
+    private RecyclerView breadRecyclerView;
+    private RecyclerView protienRecyclerView;
+
+    private BreadAdapter breadAdapter;
+    private ProteinAdapter protienAdapter;
+
+    private ListView addOnListView;
+    private AddOnAdapter addOnAdapter;
+
+    //    @FXML
 //    public TextField sandwichSubtotalTextField;
 //    @FXML
 //    public Button addOrderButton;
@@ -42,6 +59,9 @@ public class SandwichViewController extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.sandwich_view);
 
+        inflateBreadOptions();
+        inflateProteinOptions();
+        inflateAddOns();
 
         System.out.println("- Sandwich -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
@@ -52,11 +72,47 @@ public class SandwichViewController extends AppCompatActivity {
     }
 
 
+    /**
+     * Inflating with all sandwich bread options to the bread recyclerView.
+     */
+    public void inflateBreadOptions(){
+        breadRecyclerView = findViewById(R.id.BreadRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        breadRecyclerView.setLayoutManager(layoutManager);
+        SandwichBread[] breads = SandwichBread.values();
+        breadAdapter = new BreadAdapter(List.of(breads));
+        breadAdapter.setOnItemClickListener(new BreadAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int index) {
+                // Handle bread item click event
+                SandwichBread clickedBread = breads[index];
+                sandwich.setBread(clickedBread);
+            }
+        });
+        breadRecyclerView.setAdapter(breadAdapter);
 
+        }
 
+    public void inflateProteinOptions(){
+        protienRecyclerView = findViewById(R.id.ProteinRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        protienRecyclerView.setLayoutManager(layoutManager);
+        SandwichProtein[] proteins = SandwichProtein.values();
+        protienAdapter = new ProteinAdapter(List.of(proteins));
+        protienRecyclerView.setAdapter(protienAdapter);
+    }
 
+    public void inflateAddOns() {
+        addOnListView =  findViewById(R.id.AddOnListView);
+        List<SandwichAddOn> addOns = Arrays.asList(SandwichAddOn.values());
+        addOnAdapter = new AddOnAdapter(this, addOns);
+        addOnListView.setAdapter(addOnAdapter);
 
+    }
 
+    public updateSubtotal(){
+
+    }
 
 //
 //    /**
