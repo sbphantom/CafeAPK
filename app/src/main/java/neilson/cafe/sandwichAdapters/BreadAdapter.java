@@ -15,14 +15,15 @@ import neilson.cafe.SandwichBread;
 public class BreadAdapter extends RecyclerView.Adapter<BreadAdapter.BreadViewHolder> {
     private final List<SandwichBread> breadList;
     private OnItemClickListener onItemClickListener;
+    private int selectedItem = RecyclerView.NO_POSITION;
 
     public BreadAdapter(List<SandwichBread> breadList) {
         this.breadList = breadList;
     }
 
-    public interface OnItemClickListener {
+ /*   public interface OnItemClickListener {
         void onItemClick(int position);
-    }
+    }*/
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
@@ -47,6 +48,11 @@ public class BreadAdapter extends RecyclerView.Adapter<BreadAdapter.BreadViewHol
     public void onBindViewHolder(@NonNull BreadViewHolder holder, int position) {
         SandwichBread bread = breadList.get(position);
         holder.bind(bread);
+        if (position == 0) {
+            holder.itemView.setSelected(true); // Select the first item
+        } else {
+            holder.itemView.setSelected(false); // Deselect other items
+        }
     }
 
     @Override

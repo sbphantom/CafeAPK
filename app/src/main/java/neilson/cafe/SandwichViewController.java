@@ -6,6 +6,8 @@ package neilson.cafe;
 //import javafx.scene.layout.*;
 //
 import android.os.Bundle;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import neilson.cafe.sandwichAdapters.AddOnAdapter;
 import neilson.cafe.sandwichAdapters.BreadAdapter;
+import neilson.cafe.sandwichAdapters.OnItemClickListener;
 import neilson.cafe.sandwichAdapters.ProteinAdapter;
 //
 /**
@@ -29,29 +32,13 @@ import neilson.cafe.sandwichAdapters.ProteinAdapter;
 public class SandwichViewController extends AppCompatActivity {
     private RecyclerView breadRecyclerView;
     private RecyclerView protienRecyclerView;
-
     private BreadAdapter breadAdapter;
     private ProteinAdapter protienAdapter;
-
     private ListView addOnListView;
     private AddOnAdapter addOnAdapter;
-
-    //    @FXML
-//    public TextField sandwichSubtotalTextField;
-//    @FXML
-//    public Button addOrderButton;
-//    @FXML
-//    private GridPane sandwichGridPane;
-//
-//    private ArrayList<CheckBox> sandwichAddOnOptions = new ArrayList<>();
-//    private ToggleGroup breadToggleGroup = new ToggleGroup();
-//    private ToggleGroup proteinToggleGroup = new ToggleGroup();
-//
+    private EditText subtotalTextNumber;
     private CafeMain main = CafeMain.getInstance();
     private Sandwich sandwich = new Sandwich();
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +50,21 @@ public class SandwichViewController extends AppCompatActivity {
         inflateProteinOptions();
         inflateAddOns();
 
-        System.out.println("- Sandwich -");
+        //Initilizing the subtotal textfield and making it uneditable by the user.
+        subtotalTextNumber = findViewById(R.id.subtotalTextNumber);
+        subtotalTextNumber.setFocusable(false);
+        subtotalTextNumber.setFocusableInTouchMode(false);
+
+       /* System.out.println("- Sandwich -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
         System.out.println(main.addItem(new Sandwich(SandwichBread.SOUR_DOUGH, SandwichProtein.CHICKEN, new ArrayList<>()), 2));
         System.out.println(main.getCurrentOrder().getSubtotal());
         System.out.println(main.getCurrentOrder().tax());
-        System.out.println(main.getCurrentOrder().getTotal());
+        System.out.println(main.getCurrentOrder().getTotal());*/
     }
 
-
     /**
-     * Inflating with all sandwich bread options to the bread recyclerView.
+     * Inflates the RecyclerView with sandwich Bread options and sets up onClickAction
      */
     public void inflateBreadOptions(){
         breadRecyclerView = findViewById(R.id.BreadRecycler);
@@ -81,38 +72,79 @@ public class SandwichViewController extends AppCompatActivity {
         breadRecyclerView.setLayoutManager(layoutManager);
         SandwichBread[] breads = SandwichBread.values();
         breadAdapter = new BreadAdapter(List.of(breads));
-        breadAdapter.setOnItemClickListener(new BreadAdapter.OnItemClickListener() {
+        breadAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
-                // Handle bread item click event
+                //Handling the bread item click event
                 SandwichBread clickedBread = breads[index];
                 sandwich.setBread(clickedBread);
+                updateSubtotal();
             }
         });
         breadRecyclerView.setAdapter(breadAdapter);
 
-        }
-
+    }
+    /**
+     * Inflates the RecyclerView with sandwich protein  options and sets up onClickAction
+     */
     public void inflateProteinOptions(){
         protienRecyclerView = findViewById(R.id.ProteinRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         protienRecyclerView.setLayoutManager(layoutManager);
         SandwichProtein[] proteins = SandwichProtein.values();
         protienAdapter = new ProteinAdapter(List.of(proteins));
+        protienAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int index) {
+                // Handling the  protein item click event
+                SandwichProtein clickedProtein = proteins[index];
+                sandwich.setProtein(clickedProtein);
+                updateSubtotal();
+            }
+        });
         protienRecyclerView.setAdapter(protienAdapter);
     }
 
+    /**
+     * Inflates the listview with sandwich AddOn options and sets up Checkbox listener
+     */
     public void inflateAddOns() {
         addOnListView =  findViewById(R.id.AddOnListView);
         List<SandwichAddOn> addOns = Arrays.asList(SandwichAddOn.values());
         addOnAdapter = new AddOnAdapter(this, addOns);
+        addOnAdapter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                sandwich.setSandwichAddOn(addOnAdapter.getSelectedItems());
+                updateSubtotal();
+            }
+        });
         addOnListView.setAdapter(addOnAdapter);
 
     }
 
-    public updateSubtotal(){
-
+    /**
+    * updates the subtotal of the sandwich order.
+    */
+    public void updateSubtotal(){
+        double price = sandwich.price();
+        String formattedSubtotal = String.format("$%.2f", price);
+        subtotalTextNumber.setText(formattedSubtotal);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //
 //    /**

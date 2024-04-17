@@ -19,8 +19,14 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
 
     private List<SandwichProtein> proteinList;
 
+    private OnItemClickListener onItemClickListener;
+
     public ProteinAdapter(List<SandwichProtein> proteinList) {
         this.proteinList = proteinList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -38,11 +44,11 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
         return new ProteinViewHolder(textView);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ProteinViewHolder holder, int index) {
         SandwichProtein protein = proteinList.get(index);
         holder.bind(protein);
+        holder.itemView.setSelected(index == 0); // Select the first item
     }
 
     @Override
@@ -50,17 +56,28 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
         return proteinList.size();
     }
 
-    public static class ProteinViewHolder extends RecyclerView.ViewHolder {
+    class ProteinViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView proteinTextView;
 
         public ProteinViewHolder(@NonNull View itemView) {
             super(itemView);
             proteinTextView = (TextView) itemView; // A
+            itemView.setOnClickListener(this);
+
         }
 
         public void bind(SandwichProtein protein) {
             proteinTextView.setText(protein.toString());
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION && onItemClickListener != null) {
+                onItemClickListener.onItemClick(position);
+            }
+
         }
     }
 }
