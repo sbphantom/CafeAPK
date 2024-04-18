@@ -59,6 +59,8 @@ public class DonutFlavorAdapter extends RecyclerView.Adapter<DonutFlavorAdapter.
         notifyItemRangeRemoved(0,size);
     }
 
+
+
     class FlavorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView flavorTextView;
 

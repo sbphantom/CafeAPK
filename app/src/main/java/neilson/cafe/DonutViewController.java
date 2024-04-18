@@ -2,6 +2,8 @@ package neilson.cafe;
 
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -29,7 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import neilson.cafe.donutAdapters.DonutFlavorAdapter;
+import neilson.cafe.donutAdapters.DonutQuanityAdapter;
 import neilson.cafe.donutAdapters.DonutTypeAdapter;
+import neilson.cafe.donutAdapters.PreOrderAdapter;
 //
 /**
  * This class serves as the main controller for the donut ordering window.
@@ -50,6 +54,9 @@ public class DonutViewController extends AppCompatActivity {
     private Button addToOrderButton;
     private DonutTypeAdapter donutTypeAdapter;
     private DonutFlavorAdapter donutFlavorAdapter;
+    private DonutQuanityAdapter donutQuanityAdapter;
+    private PreOrderAdapter preOrderAdapter; 
+    private List<Donut> preOrderList; 
     private Donut donut = new Donut();
 
 
@@ -62,9 +69,8 @@ public class DonutViewController extends AppCompatActivity {
         setContentView(R.layout.donut_view);
 
         inflateDonutRecycler();
-
-
-
+        initalizePreOrderRecycler();
+        
         /*
         System.out.println("- Donut -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
@@ -102,7 +108,6 @@ public class DonutViewController extends AppCompatActivity {
 
 
         donutFlavorAdapter.clear();
-
         donutFlavorAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -113,6 +118,60 @@ public class DonutViewController extends AppCompatActivity {
 
         donutRecycler.setAdapter(donutFlavorAdapter);
     }
+
+
+    private List<Integer> createQuanityRange(){
+        List<Integer> values = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            values.add(i);
+        }
+        return values;
+    }
+
+    private void inflateQuantitySpinner(){
+        quantitySpinner = findViewById(R.id.quantitySpinner);
+        donutQuanityAdapter = new DonutQuanityAdapter(this, createQuanityRange());
+
+        quantitySpinner.setAdapter(donutQuanityAdapter);
+        //AutoSelctes the first item in the list.
+        quantitySpinner.setSelection(0);
+        quantitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int selectedQuantity = (int) parent.getItemAtPosition(position);
+                donut.setQuantity(selectedQuantity);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void initalizePreOrderRecycler(){
+        preOrderRecycler = findViewById(R.id.preOrderRecycler);
+        preOrderRecycler.setLayoutManager(new LinearLayoutManager(this));
+        preOrderAdapter = new PreOrderAdapter(preOrderList);
+        preOrderRecycler.setAdapter(preOrderAdapter);
+    }
+    private void onAddPreOrderClick(){
+      addPreOrder = findViewById(R.id.addPreOrder);
+      addPreOrder.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            preOrderList.add(donut);
+            preOrderAdapter.notifyDataSetChanged();
+
+          }
+      });
+
+
+    }
+    private void onDeletePreOrderClick(){
+
+    }
+
     private void updateSubtotal(){
 
     }
