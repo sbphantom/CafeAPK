@@ -1,7 +1,6 @@
 package neilson.cafe.sandwichAdapters;
 
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,10 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import neilson.cafe.R;
+import neilson.cafe.OnItemClickListener;
 import neilson.cafe.SandwichProtein;
 
 public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinViewHolder> {

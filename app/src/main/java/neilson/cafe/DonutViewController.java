@@ -1,18 +1,11 @@
 package neilson.cafe;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 //
 //import javafx.fxml.FXML;
@@ -27,19 +20,16 @@ import androidx.core.view.WindowInsetsCompat;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 //
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Spinner;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.List;
+
+import neilson.cafe.donutAdapters.DonutFlavorAdapter;
+import neilson.cafe.donutAdapters.DonutTypeAdapter;
 //
 /**
  * This class serves as the main controller for the donut ordering window.
@@ -48,31 +38,18 @@ import java.util.Optional;
  * @author Adeola Asimolowo
  */
 public class DonutViewController extends AppCompatActivity {
-//    @FXML
-//    public ImageView donutImage;
-//    @FXML
-//    public Button addOrder;
-//    @FXML
-//    public Button addButtonPreOrder;
-//    @FXML
-//    public Button deleteButtonPreOrder;
-//    @FXML
-//    public TextField donutSubtotalTextField;
-//    @FXML
-//    public GridPane donutGridPane;
-//    @FXML
-//    public GridPane DonutTypesGridPane;
-//    @FXML
-//    public ComboBox donutQuantity;
-//    @FXML
-//    public ListView flavorListView;
-//    @FXML
-//    public ListView preOrders;
-//    private ToggleGroup donutTypeToggleGroup = new ToggleGroup();
-//
+
     private CafeMain main = CafeMain.getInstance();
-//    private ObservableList<DonutFlavor> flavors = FXCollections.observableArrayList();
-//    private ObservableList<Donut> preOrdersList = FXCollections.observableArrayList();
+    private RecyclerView donutRecycler;
+    private RecyclerView flavorRecycler;
+    private Spinner quantitySpinner;
+    private Button addPreOrder;
+    private Button deletePreOrder;
+    private RecyclerView  preOrderRecycler;
+    private EditText subtotalText;
+    private Button addToOrderButton;
+    private DonutTypeAdapter donutTypeAdapter;
+    private DonutFlavorAdapter donutFlavorAdapter;
     private Donut donut = new Donut();
 
 
@@ -82,21 +59,89 @@ public class DonutViewController extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
-
         setContentView(R.layout.donut_view);
 
+        inflateDonutRecycler();
 
 
+
+        /*
         System.out.println("- Donut -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
         System.out.println(main.addItem(new Donut(DonutType.CAKE, DonutFlavor.CHOCOLATE), 2));
         System.out.println(main.getCurrentOrder().getSubtotal());
         System.out.println(main.getCurrentOrder().tax());
         System.out.println(main.getCurrentOrder().getTotal());
-
-
+        */
 
     }
+
+
+    private void inflateDonutRecycler(){
+        donutRecycler = findViewById(R.id.donutRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        donutRecycler.setLayoutManager(layoutManager);
+        DonutType[] donutTypes =  DonutType.values();
+        donutTypeAdapter = new DonutTypeAdapter(List.of(donutTypes));
+        donutTypeAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int index) {
+                DonutType clickedDonutType = donutTypes[index];
+                donut.setType(clickedDonutType);
+                populateDonutFlavors(clickedDonutType);
+            }
+        });
+    }
+
+    private void populateDonutFlavors(DonutType donutType){
+        flavorRecycler = findViewById(R.id.flavorRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        flavorRecycler.setLayoutManager(layoutManager);
+        DonutFlavor[] flavors = donutType.getFlavors().toArray(new DonutFlavor[0]);
+        donutFlavorAdapter = new DonutFlavorAdapter(List.of(flavors));
+
+
+        donutFlavorAdapter.clear();
+
+        donutFlavorAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                DonutFlavor clickedFlavor  = flavors[position];
+                donut.setFlavor(clickedFlavor);
+            }
+        });
+
+        donutRecycler.setAdapter(donutFlavorAdapter);
+    }
+    private void updateSubtotal(){
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //
 //    @FXML

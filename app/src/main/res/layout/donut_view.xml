@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="0dp">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/addToOrderButton"
             android:layout_width="169dp"
             android:layout_height="59dp"
             android:layout_marginBottom="16dp"
@@ -34,7 +34,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="?attr/colorPrimary"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme" />
@@ -87,7 +87,7 @@
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/BreadRecycler"
+                    android:id="@+id/donutRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingHorizontal="15sp"
@@ -107,7 +107,7 @@
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ProteinRecycler"
+                    android:id="@+id/flavorRecycler"
                     android:layout_width="262dp"
                     android:layout_height="match_parent"
                     android:paddingHorizontal="15sp"
@@ -129,7 +129,7 @@
                     android:textSize="16sp" />
 
                 <Spinner
-                    android:id="@+id/spinner2"
+                    android:id="@+id/quantitySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="61dp" />
 
@@ -138,17 +138,17 @@
         </TableLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/preOrderRecycler"
             android:layout_width="203dp"
             android:layout_height="101dp"
             android:background="#576750A3"
-            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintEnd_toStartOf="@+id/deletePreOrder"
             app:layout_constraintHorizontal_bias="0.38"
-            app:layout_constraintStart_toEndOf="@+id/button"
+            app:layout_constraintStart_toEndOf="@+id/addPreOrder"
             app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/addPreOrder"
             android:layout_width="87dp"
             android:layout_height="71dp"
             android:text="Button"
@@ -156,7 +156,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/deletePreOrder"
             android:layout_width="82dp"
             android:layout_height="70dp"
             android:text="Button"
@@ -178,13 +178,13 @@
             app:layout_constraintGuide_begin="634dp" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/subtotalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
             android:text="Name"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintBottom_toTopOf="@+id/addToOrderButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

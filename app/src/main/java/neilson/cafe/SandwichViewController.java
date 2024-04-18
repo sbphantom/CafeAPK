@@ -14,13 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import neilson.cafe.sandwichAdapters.AddOnAdapter;
 import neilson.cafe.sandwichAdapters.BreadAdapter;
-import neilson.cafe.sandwichAdapters.OnItemClickListener;
 import neilson.cafe.sandwichAdapters.ProteinAdapter;
 //
 /**
@@ -67,7 +65,7 @@ public class SandwichViewController extends AppCompatActivity {
      * Inflates the RecyclerView with sandwich Bread options and sets up onClickAction
      */
     public void inflateBreadOptions(){
-        breadRecyclerView = findViewById(R.id.BreadRecycler);
+        breadRecyclerView = findViewById(R.id.donutRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         breadRecyclerView.setLayoutManager(layoutManager);
         SandwichBread[] breads = SandwichBread.values();
@@ -88,7 +86,7 @@ public class SandwichViewController extends AppCompatActivity {
      * Inflates the RecyclerView with sandwich protein  options and sets up onClickAction
      */
     public void inflateProteinOptions(){
-        protienRecyclerView = findViewById(R.id.ProteinRecycler);
+        protienRecyclerView = findViewById(R.id.flavorRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         protienRecyclerView.setLayoutManager(layoutManager);
         SandwichProtein[] proteins = SandwichProtein.values();

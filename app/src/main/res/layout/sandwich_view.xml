@@ -83,7 +83,7 @@
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/BreadRecycler"
+                    android:id="@+id/donutRecycler"
                     android:layout_width="314dp"
                     android:layout_height="match_parent"
                     android:paddingHorizontal="15sp"
@@ -103,7 +103,7 @@
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ProteinRecycler"
+                    android:id="@+id/flavorRecycler"
                     android:layout_width="569dp"
                     android:layout_height="match_parent"
                     android:paddingHorizontal="15sp"
@@ -132,7 +132,7 @@
         </TableLayout>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/addToOrderButton"
             android:layout_width="169dp"
             android:layout_height="59dp"
             android:layout_marginBottom="16dp"
@@ -154,7 +154,7 @@
             android:layout_height="42dp"
             android:ems="10"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintBottom_toTopOf="@+id/addToOrderButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent" />
