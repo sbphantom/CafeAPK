@@ -10,7 +10,10 @@ package neilson.cafe;
 //import javafx.scene.control.*;
 //import javafx.stage.Stage;
 //
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -23,6 +26,18 @@ import java.util.*;
  * @author Danny Onuorah
  */
 public class HistoryViewController extends AppCompatActivity {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        EdgeToEdge.enable(this);
+        setContentView(R.layout.history_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Order History");
+
+    }
+
 //    @FXML
 //    public Label subtotalText;
 //    @FXML

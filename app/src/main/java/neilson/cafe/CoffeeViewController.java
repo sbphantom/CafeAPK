@@ -7,6 +7,7 @@ package neilson.cafe;
 //
 
 import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +50,10 @@ public class CoffeeViewController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.coffee_view);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Order Coffee");
+
 
 
         System.out.println("- Coffee -");

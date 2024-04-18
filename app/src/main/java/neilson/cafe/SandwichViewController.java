@@ -5,6 +5,7 @@ package neilson.cafe;
 //import javafx.scene.layout.*;
 //
 import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +42,8 @@ public class SandwichViewController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.sandwich_view);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Order a Sandwich");
 
         System.out.println("- Sandwich -");
         System.out.println(main.getCurrentOrder().getOrderNumber());

@@ -1,6 +1,7 @@
 package neilson.cafe;
 
 import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,8 @@ public class CartViewController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.order_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Current Order");
 
     }
 //    private ObservableMap<MenuItem, Integer> cart;

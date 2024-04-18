@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -84,7 +85,8 @@ public class DonutViewController extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
 
         setContentView(R.layout.donut_view);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Order Donuts");
 
 
         System.out.println("- Donut -");
