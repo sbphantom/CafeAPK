@@ -49,6 +49,8 @@ public class Donut extends MenuItem {
      *
      * @return item name
      */
+
+    public DonutFlavor getFlavor(){return this.flavor;}
     @Override
     public String name() {
         return flavor + " " + type + " Donut";

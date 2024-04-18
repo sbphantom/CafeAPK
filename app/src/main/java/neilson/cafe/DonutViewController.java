@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 //import javafx.collections.ObservableList;
 //
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,7 +57,7 @@ public class DonutViewController extends AppCompatActivity {
     private DonutFlavorAdapter donutFlavorAdapter;
     private DonutQuanityAdapter donutQuanityAdapter;
     private PreOrderAdapter preOrderAdapter; 
-    private List<Donut> preOrderList; 
+    private List<Donut> preOrderList = new ArrayList<>();;
     private Donut donut = new Donut();
 
 
@@ -70,7 +71,8 @@ public class DonutViewController extends AppCompatActivity {
 
         inflateDonutRecycler();
         initalizePreOrderRecycler();
-        
+        onAddPreOrderClick();
+        onDeletePreOrderClick();
         /*
         System.out.println("- Donut -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
@@ -81,7 +83,6 @@ public class DonutViewController extends AppCompatActivity {
         */
 
     }
-
 
     private void inflateDonutRecycler(){
         donutRecycler = findViewById(R.id.donutRecycler);
@@ -119,7 +120,6 @@ public class DonutViewController extends AppCompatActivity {
         donutRecycler.setAdapter(donutFlavorAdapter);
     }
 
-
     private List<Integer> createQuanityRange(){
         List<Integer> values = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
@@ -155,26 +155,62 @@ public class DonutViewController extends AppCompatActivity {
         preOrderAdapter = new PreOrderAdapter(preOrderList);
         preOrderRecycler.setAdapter(preOrderAdapter);
     }
+
     private void onAddPreOrderClick(){
       addPreOrder = findViewById(R.id.addPreOrder);
       addPreOrder.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            preOrderList.add(donut);
+            Donut finalDonut = new Donut();
+            finalDonut.setQuantity(donut.getQuantity());
+            finalDonut.setType(donut.getType());
+            finalDonut.setFlavor(donut.getFlavor());
+
+            preOrderList.add(finalDonut);
             preOrderAdapter.notifyDataSetChanged();
+            updateSubtotal("add", finalDonut);
 
           }
       });
 
-
-    }
-    private void onDeletePreOrderClick(){
-
     }
 
-    private void updateSubtotal(){
+    private void onDeletePreOrderClick() {
+        deletePreOrder = findViewById(R.id.deletePreOrder);
+        preOrderAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (position != RecyclerView.NO_POSITION) {
+                    Donut selectedDonutOrder = preOrderList.get(position);
+                    preOrderList.remove(selectedDonutOrder);
+                    updateSubtotal("sub", selectedDonutOrder);
+                    preOrderAdapter.notifyItemRemoved(position);
 
+                } else{
+                    Toast.makeText(DonutViewController.this, "Please select an donut to delete", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+    private void updateSubtotal(String operation, Donut donut){
+
+        String subtotalStr = subtotalText.getText().toString();
+        double subtotal = subtotalStr.isEmpty() ? 0 : Double.parseDouble(subtotalStr.substring(1));
+
+        switch (operation){
+            case "add":
+                subtotal += donut.price() * donut.getQuantity();
+
+            case "sub":
+                subtotal -= donut.price() * donut.getQuantity();
+            default:
+                break;
+        }
+        String formattedSubtotal = String.format("$%.2f", subtotal);
+        subtotalText.setText(formattedSubtotal);;
+    }
+
 
 
 

@@ -11,12 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import neilson.cafe.Donut;
+import neilson.cafe.OnItemClickListener;
 
 public class PreOrderAdapter extends RecyclerView.Adapter<PreOrderAdapter.PreOrderViewHolder> {
     private List<Donut> preOrders;
-
+    private OnItemClickListener onItemClickListener;
     public PreOrderAdapter(List<Donut> preOrders){
         this.preOrders = preOrders;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -42,11 +47,23 @@ public class PreOrderAdapter extends RecyclerView.Adapter<PreOrderAdapter.PreOrd
     @Override
     public int getItemCount(){return preOrders.size(); }
 
-    static class PreOrderViewHolder extends RecyclerView.ViewHolder{
+     class PreOrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView donutTextView;
         PreOrderViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             donutTextView = (TextView) itemView;
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Handle the click event
+            if (onItemClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClickListener.onItemClick(position);
+                }
+            }
         }
 
     }
