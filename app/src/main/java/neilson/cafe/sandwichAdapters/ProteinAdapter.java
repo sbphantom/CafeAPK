@@ -1,5 +1,6 @@
 package neilson.cafe.sandwichAdapters;
 
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import neilson.cafe.SandwichProtein;
 public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinViewHolder> {
 
     private List<SandwichProtein> proteinList;
+    private int selectedItem = RecyclerView.NO_POSITION;
 
     private OnItemClickListener onItemClickListener;
 
@@ -36,8 +38,8 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        textView.setPadding(10, 10, 10, 10);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setPadding(15, 15, 15, 15);
 
         return new ProteinViewHolder(textView);
     }
@@ -47,6 +49,8 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
         SandwichProtein protein = proteinList.get(index);
         holder.bind(protein);
         holder.itemView.setSelected(index == 0); // Select the first item
+        holder.itemView.setBackgroundColor(index == selectedItem ? Color.LTGRAY : Color.TRANSPARENT);
+
     }
 
     @Override
@@ -60,7 +64,7 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
 
         public ProteinViewHolder(@NonNull View itemView) {
             super(itemView);
-            proteinTextView = (TextView) itemView; // A
+            proteinTextView = (TextView) itemView;
             itemView.setOnClickListener(this);
 
         }
@@ -73,6 +77,8 @@ public class ProteinAdapter extends RecyclerView.Adapter<ProteinAdapter.ProteinV
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && onItemClickListener != null) {
+                selectedItem = position;
+                notifyDataSetChanged(); // Notify adapter that data has changed to trigger onBindViewHolder
                 onItemClickListener.onItemClick(position);
             }
 

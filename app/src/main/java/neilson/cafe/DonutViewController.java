@@ -22,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 //
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,7 +48,6 @@ import neilson.cafe.donutAdapters.PreOrderAdapter;
 public class DonutViewController extends AppCompatActivity {
 
     private CafeMain main = CafeMain.getInstance();
-    private RecyclerView donutRecycler;
     private RecyclerView flavorRecycler;
     private Spinner quantitySpinner;
     private Button addPreOrder;
@@ -53,80 +55,94 @@ public class DonutViewController extends AppCompatActivity {
     private RecyclerView  preOrderRecycler;
     private EditText subtotalText;
     private Button addToOrderButton;
-    private DonutTypeAdapter donutTypeAdapter;
-    private DonutFlavorAdapter donutFlavorAdapter;
     private DonutQuanityAdapter donutQuanityAdapter;
     private PreOrderAdapter preOrderAdapter; 
     private List<Donut> preOrderList = new ArrayList<>();;
     private Donut donut = new Donut();
+    private DonutFlavorAdapter flavorAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        main = new CafeMain();
-
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
-        setContentView(R.layout.donut_view);
+        setContentView(R.layout.donut_view_test);
 
-        inflateDonutRecycler();
-        initalizePreOrderRecycler();
-        onAddPreOrderClick();
-        onDeletePreOrderClick();
-        /*
-        System.out.println("- Donut -");
-        System.out.println(main.getCurrentOrder().getOrderNumber());
-        System.out.println(main.addItem(new Donut(DonutType.CAKE, DonutFlavor.CHOCOLATE), 2));
-        System.out.println(main.getCurrentOrder().getSubtotal());
-        System.out.println(main.getCurrentOrder().tax());
-        System.out.println(main.getCurrentOrder().getTotal());
-        */
+
+
+        inflateDonutRadioButtons();
+        inflateQuantitySpinner();
 
     }
 
-    private void inflateDonutRecycler(){
-        donutRecycler = findViewById(R.id.donutRecycler);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        donutRecycler.setLayoutManager(layoutManager);
-        DonutType[] donutTypes =  DonutType.values();
-        donutTypeAdapter = new DonutTypeAdapter(List.of(donutTypes));
-        donutTypeAdapter.setOnItemClickListener(new OnItemClickListener() {
+    private void inflateDonutRadioButtons(){
+        RadioGroup donutTypeRadioGroup = findViewById(R.id.donutTypeRadioGroup);
+        DonutType[] donutTypes = DonutType.values();
+
+        for (int i = 0; i < donutTypes.length; i++){
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setLayoutParams(new RadioGroup.LayoutParams(
+                    RadioGroup.LayoutParams.WRAP_CONTENT,
+                    RadioGroup.LayoutParams.WRAP_CONTENT
+            ));
+            radioButton.setTag(donutTypes[i]);
+            radioButton.setText(donutTypes[i].toString());
+            donutTypeRadioGroup.addView(radioButton);
+
+            if (i == 0) {
+                radioButton.setChecked(true);
+                setDonutImage(donutTypes[i]);
+                donut.setType(donutTypes[i]);
+            }
+        }
+        donutTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onItemClick(int index) {
-                DonutType clickedDonutType = donutTypes[index];
-                donut.setType(clickedDonutType);
-                populateDonutFlavors(clickedDonutType);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton selectedRadioButton = findViewById(checkedId);
+                DonutType selectedDonutType = (DonutType) selectedRadioButton.getTag();
+                setDonutImage(selectedDonutType);
+                donut.setType(selectedDonutType);
+                populateDonutFlavors(selectedDonutType);
+
+                Toast.makeText(getApplicationContext(), "Selected Donut Type: " + selectedDonutType, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setDonutImage(DonutType donutType) {
+        ImageView donutImageView = findViewById(R.id.donutImageView);
+        int drawableId;
+        switch (donutType) {
+            case YEAST:
+                drawableId = R.drawable.yeast;
+                break;
+            case CAKE:
+                drawableId = R.drawable.cake;
+                break;
+            case HOLE:
+                drawableId = R.drawable.holes;
+                break;
+            default:
+                drawableId = R.drawable.yeast;
+                break;
+        }
+        donutImageView.setImageResource(drawableId);
     }
 
     private void populateDonutFlavors(DonutType donutType){
+        Toast.makeText(getApplicationContext(), "Populate Donut Flavors called for " + donutType, Toast.LENGTH_SHORT).show();
+
         flavorRecycler = findViewById(R.id.flavorRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         flavorRecycler.setLayoutManager(layoutManager);
-        DonutFlavor[] flavors = donutType.getFlavors().toArray(new DonutFlavor[0]);
-        donutFlavorAdapter = new DonutFlavorAdapter(List.of(flavors));
+        List<DonutFlavor> flavors = donutType.getFlavors();
+        flavorAdapter = new DonutFlavorAdapter(flavors);
 
+        flavorRecycler.setAdapter(flavorAdapter);
+        flavorAdapter.notifyDataSetChanged(); // Notify adapter of data change
 
-        donutFlavorAdapter.clear();
-        donutFlavorAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                DonutFlavor clickedFlavor  = flavors[position];
-                donut.setFlavor(clickedFlavor);
-            }
-        });
-
-        donutRecycler.setAdapter(donutFlavorAdapter);
     }
 
-    private List<Integer> createQuanityRange(){
-        List<Integer> values = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            values.add(i);
-        }
-        return values;
-    }
 
     private void inflateQuantitySpinner(){
         quantitySpinner = findViewById(R.id.quantitySpinner);
@@ -141,13 +157,30 @@ public class DonutViewController extends AppCompatActivity {
                 int selectedQuantity = (int) parent.getItemAtPosition(position);
                 donut.setQuantity(selectedQuantity);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
     }
+
+
+
+
+
+
+
+
+
+
+    private List<Integer> createQuanityRange(){
+        List<Integer> values = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            values.add(i);
+        }
+        return values;
+    }
+
 
     private void initalizePreOrderRecycler(){
         preOrderRecycler = findViewById(R.id.preOrderRecycler);

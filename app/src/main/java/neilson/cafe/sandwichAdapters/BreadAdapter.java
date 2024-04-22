@@ -1,5 +1,6 @@
 package neilson.cafe.sandwichAdapters;
 
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +40,8 @@ public class BreadAdapter extends RecyclerView.Adapter<BreadAdapter.BreadViewHol
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        textView.setPadding(10, 10, 10, 10);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setPadding(15, 15, 15, 15);
 
         return new BreadViewHolder(textView);
     }
@@ -49,11 +50,10 @@ public class BreadAdapter extends RecyclerView.Adapter<BreadAdapter.BreadViewHol
     public void onBindViewHolder(@NonNull BreadViewHolder holder, int position) {
         SandwichBread bread = breadList.get(position);
         holder.bind(bread);
-        if (position == 0) {
-            holder.itemView.setSelected(true); // Select the first item
-        } else {
-            holder.itemView.setSelected(false); // Deselect other items
-        }
+        holder.itemView.setBackgroundColor(position == selectedItem ? Color.LTGRAY : Color.TRANSPARENT);
+
+        // Deselect other items
+        holder.itemView.setSelected(position == 0); // Select the first item
     }
 
     @Override
@@ -78,6 +78,8 @@ public class BreadAdapter extends RecyclerView.Adapter<BreadAdapter.BreadViewHol
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && onItemClickListener != null) {
+                selectedItem = position;
+                notifyDataSetChanged(); // Notify adapter that data has changed to trigger onBindViewHolder
                 onItemClickListener.onItemClick(position);
             }
         }

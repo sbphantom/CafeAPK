@@ -21,4 +21,7 @@
     <string name="cancel">Cancel</string>
     <string name="subtotal">Subtotal</string>
 
+    <string name="addon_name_placeholder">Addon Name</string>
+
+
 </resources>

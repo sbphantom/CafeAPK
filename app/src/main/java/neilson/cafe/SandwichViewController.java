@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,14 +47,16 @@ public class SandwichViewController extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.sandwich_view);
 
+
+
         inflateBreadOptions();
         inflateProteinOptions();
         inflateAddOns();
-
-        //Initilizing the subtotal textfield and making it uneditable by the user.
         subtotalTextNumber = findViewById(R.id.subtotalTextNumber);
         subtotalTextNumber.setFocusable(false);
         subtotalTextNumber.setFocusableInTouchMode(false);
+        //Initilizing the subtotal textfield and making it uneditable by the user.
+
 
        /* System.out.println("- Sandwich -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
@@ -70,16 +75,24 @@ public class SandwichViewController extends AppCompatActivity {
         breadRecyclerView.setLayoutManager(layoutManager);
         SandwichBread[] breads = SandwichBread.values();
         breadAdapter = new BreadAdapter(List.of(breads));
+        breadRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                breadRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
+            }
+        });
+
         breadAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
                 //Handling the bread item click event
                 SandwichBread clickedBread = breads[index];
                 sandwich.setBread(clickedBread);
-                updateSubtotal();
             }
         });
         breadRecyclerView.setAdapter(breadAdapter);
+
+
 
     }
     /**
@@ -101,23 +114,26 @@ public class SandwichViewController extends AppCompatActivity {
             }
         });
         protienRecyclerView.setAdapter(protienAdapter);
+
+        protienRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                protienRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
+            }
+        });
     }
 
     /**
      * Inflates the listview with sandwich AddOn options and sets up Checkbox listener
      */
     public void inflateAddOns() {
-        addOnListView =  findViewById(R.id.AddOnListView);
+        addOnListView = findViewById(R.id.AddOnListView);
         List<SandwichAddOn> addOns = Arrays.asList(SandwichAddOn.values());
-        addOnAdapter = new AddOnAdapter(this, addOns);
-        addOnAdapter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sandwich.setSandwichAddOn(addOnAdapter.getSelectedItems());
-                updateSubtotal();
-            }
-        });
+        // Create a new AddOnAdapter with the addon list
+        addOnAdapter = new AddOnAdapter(this, addOns, this);
+        // Set the adapter for the ListView
         addOnListView.setAdapter(addOnAdapter);
+        // Set up checkbox listeners directly
 
     }
 
@@ -125,9 +141,16 @@ public class SandwichViewController extends AppCompatActivity {
     * updates the subtotal of the sandwich order.
     */
     public void updateSubtotal(){
+        ArrayList<SandwichAddOn> addOns = new ArrayList<>(addOnAdapter.getSelectedItems());
+        sandwich.setSandwichAddOn(addOns);
+
+
         double price = sandwich.price();
+
         String formattedSubtotal = String.format("$%.2f", price);
         subtotalTextNumber.setText(formattedSubtotal);
+        Toast.makeText(this, "Subtotal updated: " + formattedSubtotal, Toast.LENGTH_SHORT).show();
+
     }
 
 
