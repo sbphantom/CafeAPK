@@ -309,6 +309,9 @@ public class DonutViewController extends AppCompatActivity {
         });
     }
 
+    private void onAddToCart(){
+        preOrderAdapter.getPreOrders();
+    }
     /**
      *  Update the subtotal based on the operation and the donut details
      * @param operation add for addition, sub for substitution

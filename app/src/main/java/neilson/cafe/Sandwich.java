@@ -49,6 +49,15 @@ public class Sandwich extends MenuItem {
     }
 
     /**
+     * Get sandwich addons
+     *
+     * @return sandwich addons
+     */
+    public ArrayList<SandwichAddOn> getAddOns() {
+        return addOns;
+    }
+
+    /**
      * Get number of addOns on the sandwich
      *
      * @return number of addOns
