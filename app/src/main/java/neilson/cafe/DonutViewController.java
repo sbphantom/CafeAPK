@@ -251,7 +251,7 @@ public class DonutViewController extends AppCompatActivity {
                 // Handle item click event here
                 // You can get the clicked item position and perform actions accordingly
                 // For example, display a toast message
-                Toast.makeText(DonutViewController.this, "Item clicked at position: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(DonutViewController.this, "Item clicked at position: " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -316,6 +316,8 @@ public class DonutViewController extends AppCompatActivity {
      */
     private void updateSubtotal(String operation, Donut donut){
         subtotalText = findViewById(R.id.subtotalTextDonut);
+        subtotalText.setFocusable(false);
+        subtotalText.setFocusableInTouchMode(false);
         String subtotalStr = subtotalText.getText().toString();
         double subtotal = 0;
 

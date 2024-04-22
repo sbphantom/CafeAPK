@@ -22,6 +22,13 @@
     <string name="subtotal">Subtotal</string>
 
     <string name="addon_name_placeholder">Addon Name</string>
+    <string name="select_type">Select Type</string>
+    <string name="button_text">Add to Cart 🛒 </string>
 
+    <string name="order_sandwich">Order a Sandwich!</string>
+    <string name="select_bread">Select Bread:</string>
+    <string name="select_protein">Select Protein:</string>
+    <string name="add_ons">Add-ons:</string>
+    <string name="add_to_order">Add to Cart 🛒</string>
 
 </resources>

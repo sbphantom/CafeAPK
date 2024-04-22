@@ -18,29 +18,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cake" />
 
+
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="410dp"
-        android:layout_height="26dp"
+        android:layout_width="407dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
         android:rotationX="-20"
-        android:text="Order a Sandwich!"
+        android:text="@string/order_sandwich"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donutImageView" />
 
-
     <RadioGroup
         android:id="@+id/donutTypeRadioGroup"
-        android:layout_width="283dp"
-        android:layout_height="65dp"
+        android:layout_width="282dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5">
-
 
 
     </RadioGroup>
@@ -49,13 +50,13 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Type"
+        android:text="@string/select_type"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textView11"
         app:layout_constraintEnd_toStartOf="@+id/donutTypeRadioGroup"
-        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintHorizontal_bias="0.021"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/donutTypeRadioGroup"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -68,12 +69,15 @@
         app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintEnd_toStartOf="@+id/flavorRecycler"
         app:layout_constraintHorizontal_bias="0.019"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/flavorRecycler"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flavorRecycler"
         android:layout_width="284dp"
-        android:layout_height="98dp"
+        android:layout_height="134dp"
+        android:layout_marginTop="36dp"
         android:paddingHorizontal="15sp"
         android:paddingVertical="5sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,14 +93,14 @@
         app:layout_constraintEnd_toStartOf="@+id/quantitySpinner"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flavorRecycler"
+        app:layout_constraintTop_toTopOf="@+id/quantitySpinner"
         app:layout_constraintVertical_bias="0.285" />
 
     <Spinner
         android:id="@+id/quantitySpinner"
         android:layout_width="285dp"
         android:layout_height="42dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/flavorRecycler" />
 
@@ -116,14 +120,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_bias="0.213"
         app:srcCompat="@drawable/donut_icon" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/preDonutOrderRecycler"
         android:layout_width="281dp"
         android:layout_height="142dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quantitySpinner" />
 
@@ -166,25 +171,28 @@
         android:id="@+id/button"
         android:layout_width="202dp"
         android:layout_height="58dp"
-        android:layout_marginBottom="44dp"
-        android:text="Button"
+        android:layout_marginBottom="20dp"
+        android:text="@string/button_text"
+        android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/subtotalTextDonut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:ems="10"
         android:inputType="text"
         android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/preDonutOrderRecycler"
+        app:layout_constraintVertical_bias="0.966" />
 
-    <!-- Other views omitted for brevity -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
