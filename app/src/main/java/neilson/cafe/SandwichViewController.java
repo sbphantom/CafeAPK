@@ -5,6 +5,8 @@ package neilson.cafe;
 //import javafx.scene.layout.*;
 //
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
@@ -34,7 +36,14 @@ public class SandwichViewController extends AppCompatActivity {
     private CafeMain main = CafeMain.getInstance();
     private Sandwich sandwich = new Sandwich();
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
     @Override
@@ -44,6 +53,9 @@ public class SandwichViewController extends AppCompatActivity {
         setContentView(R.layout.sandwich_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("Order a Sandwich");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         System.out.println("- Sandwich -");
         System.out.println(main.getCurrentOrder().getOrderNumber());
