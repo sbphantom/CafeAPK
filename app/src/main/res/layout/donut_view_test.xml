@@ -105,7 +105,85 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="369dp" />
+        app:layout_constraintGuide_begin="522dp" />
+
+    <ImageView
+        android:id="@+id/donutFlavorImg"
+        android:layout_width="101dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/flavorRecycler"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintVertical_bias="0.2"
+        app:srcCompat="@drawable/donut_icon" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/preDonutOrderRecycler"
+        android:layout_width="281dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quantitySpinner" />
+
+    <ImageButton
+        android:id="@+id/plusButton"
+        android:layout_width="68dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/preDonutOrderRecycler"
+        app:layout_constraintHorizontal_bias="0.76"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/preDonutOrderRecycler"
+        app:srcCompat="@drawable/plusbutton" />
+
+    <ImageButton
+        android:id="@+id/minusButton"
+        android:layout_width="68dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="48dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/preDonutOrderRecycler"
+        app:layout_constraintEnd_toStartOf="@+id/preDonutOrderRecycler"
+        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/minusbutton" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Current Order "
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/plusButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="202dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="44dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/subtotalTextDonut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Other views omitted for brevity -->
 

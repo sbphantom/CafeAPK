@@ -1,5 +1,7 @@
 package neilson.cafe.donutAdapters;
 
+import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import neilson.cafe.R;
 public class DonutFlavorAdapter extends RecyclerView.Adapter<DonutFlavorAdapter.FlavorViewHolder> {
     private List<DonutFlavor> donutFlavorList;
     private OnItemClickListener onItemClickListener;
+    private int selectedItem = RecyclerView.NO_POSITION;
 
     public DonutFlavorAdapter(List<DonutFlavor> flavorList) {
         if (flavorList == null) {
@@ -34,14 +37,22 @@ public class DonutFlavorAdapter extends RecyclerView.Adapter<DonutFlavorAdapter.
     @NonNull
     @Override
     public FlavorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_recyclerview_item2, parent, false);
-        return new FlavorViewHolder(itemView);
+        TextView textView = new TextView(parent.getContext());
+        textView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setPadding(15, 15, 15, 15);
+        return new FlavorViewHolder(textView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FlavorViewHolder holder, int position) {
         DonutFlavor flavor = donutFlavorList.get(position);
         holder.bind(flavor);
+        holder.itemView.setSelected(position == 0); // Select the first item
+        holder.itemView.setBackgroundColor(position == selectedItem ? Color.LTGRAY : Color.TRANSPARENT);
     }
 
     @Override
@@ -60,7 +71,7 @@ public class DonutFlavorAdapter extends RecyclerView.Adapter<DonutFlavorAdapter.
 
         public FlavorViewHolder(@NonNull View itemView) {
             super(itemView);
-            flavorTextView = itemView.findViewById(R.id.donutFlavorTextView);
+            flavorTextView = (TextView) itemView;
             itemView.setOnClickListener(this);
         }
 
@@ -72,6 +83,8 @@ public class DonutFlavorAdapter extends RecyclerView.Adapter<DonutFlavorAdapter.
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && onItemClickListener != null) {
+                selectedItem = position;
+                notifyDataSetChanged(); // Notify adapter that data has changed to trigger onBindViewHolder
                 onItemClickListener.onItemClick(position);
             }
         }

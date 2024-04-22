@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/donutFlavorTextView"
+        android:id="@+id/donutTextView"
         android:layout_width="411dp"
         android:layout_height="31dp"
         android:padding="16dp"
