@@ -70,14 +70,19 @@ public class DonutViewController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.donut_view_test);
 
+        // Initialize UI components
         inflateDonutRadioButtons();
         inflateQuantitySpinner();
         initalizePreOrderRecycler();
 
+        // Set click listeners for add and delete buttons
         onAddPreOrderClick();
         onDeletePreOrderClick();
     }
 
+    /**
+     * Inflate radio buttons for selecting donut types
+     */
     private void inflateDonutRadioButtons(){
         RadioGroup donutTypeRadioGroup = findViewById(R.id.donutTypeRadioGroup);
         DonutType[] donutTypes = DonutType.values();
@@ -114,6 +119,10 @@ public class DonutViewController extends AppCompatActivity {
         });
     }
 
+    /**
+     *  Set the donut image based on the selected donut type
+     * @param donutType user selected donut type
+     */
     private void setDonutImage(DonutType donutType) {
         ImageView donutImageView = findViewById(R.id.donutImageView);
         int drawableId;
@@ -134,6 +143,10 @@ public class DonutViewController extends AppCompatActivity {
         donutImageView.setImageResource(drawableId);
     }
 
+    /**
+     *  Populate the list of donut flavors based on the selected donut type
+     * @param donutType user selected donut type
+     */
     private void populateDonutFlavors(DonutType donutType){
 
         flavorRecycler = findViewById(R.id.flavorRecycler);
@@ -143,7 +156,6 @@ public class DonutViewController extends AppCompatActivity {
 
 
         List<DonutFlavor> flavors = donutType.getFlavors();
-        // Update the existing adapter with new data
         flavorAdapter.updateDonutFlavors(flavors);
         flavorAdapter.notifyDataSetChanged();
         flavorAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -160,11 +172,12 @@ public class DonutViewController extends AppCompatActivity {
                 flavorRecycler.findViewHolderForAdapterPosition(0).itemView.performClick();
             }
         });
-
-        // Add toast message to check if the method is called and to verify the size of the flavors list
     }
 
-
+    /**
+     * Set the donut flavor image based on the selected flavor
+     * @param flavor selected Flavor
+     */
     private void setDonutFlavorImg(DonutFlavor flavor){
         ImageView donutFlavorImg = findViewById(R.id.donutFlavorImg);
         int drawableId;
@@ -188,6 +201,9 @@ public class DonutViewController extends AppCompatActivity {
         donutFlavorImg.setImageResource(drawableId);
     }
 
+    /**
+     * Inflate spinner for selecting quantity of donuts
+     */
     private void inflateQuantitySpinner(){
         quantitySpinner = findViewById(R.id.quantitySpinner);
         donutQuanityAdapter = new DonutQuanityAdapter(this, createQuanityRange());
@@ -208,6 +224,10 @@ public class DonutViewController extends AppCompatActivity {
         });
     }
 
+    /**
+     * Create a list of quantity values for the spinner
+     * @return
+     */
     private List<Integer> createQuanityRange(){
         List<Integer> values = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
@@ -216,7 +236,9 @@ public class DonutViewController extends AppCompatActivity {
         return values;
     }
 
-
+    /**
+     * Initializes the RecyclerView for pre-order donuts
+     */
     private void initalizePreOrderRecycler(){
         preOrderRecycler = findViewById(R.id.preDonutOrderRecycler);
         preOrderRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -234,6 +256,9 @@ public class DonutViewController extends AppCompatActivity {
         });
     }
 
+    /**
+     * Handles click event for adding a pre-order donut
+     */
     private void onAddPreOrderClick(){
       addPreOrder = findViewById(R.id.plusButton);
       addPreOrder.setOnClickListener(new View.OnClickListener() {
@@ -257,39 +282,45 @@ public class DonutViewController extends AppCompatActivity {
 
     }
 
+    /**
+     * Handles click event for deleting a pre-order donut
+     */
     private void onDeletePreOrderClick() {
         deletePreOrder = findViewById(R.id.minusButton);
         deletePreOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get the position of the selected item
-                int selectedItemPosition = preOrderAdapter.getSelectedItemPosition();
+                if (!preOrderList.isEmpty()) {
+                    int position = preOrderAdapter.getSelectedItemPosition();
+                    if (position != RecyclerView.NO_POSITION) {
 
-                // Check if a valid item is selected
-                if (selectedItemPosition != RecyclerView.NO_POSITION) {
-                    // Remove the item from the adapter's list
-                    preOrderAdapter.remove(selectedItemPosition);
+                        Donut selectedDonutOrder =  preOrderList.remove(position);
 
-                    // Notify the adapter that an item is removed
-                    preOrderAdapter.notifyItemRemoved(selectedItemPosition);
+                        preOrderAdapter.notifyItemRemoved(position);
 
-                    // Optionally, update the subtotal
-                    Donut selectedDonutOrder = preOrderList.get(selectedItemPosition);
-                    updateSubtotal("sub", selectedDonutOrder);
+                        updateSubtotal("sub", selectedDonutOrder);
+                    } else {
+                        Toast.makeText(DonutViewController.this, "Please select a donut to delete", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(DonutViewController.this, "Please select a donut to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DonutViewController.this, "There are no donuts to delete", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+    /**
+     *  Update the subtotal based on the operation and the donut details
+     * @param operation add for addition, sub for substitution
+     * @param donut donut to calculate subtotal
+     */
     private void updateSubtotal(String operation, Donut donut){
         subtotalText = findViewById(R.id.subtotalTextDonut);
         String subtotalStr = subtotalText.getText().toString();
         double subtotal = 0;
 
         if (!subtotalStr.isEmpty() && subtotalStr.startsWith("$")) {
-            String numericSubtotalStr = subtotalStr.substring(1); // Remove the dollar sign
+            String numericSubtotalStr = subtotalStr.substring(1);
             subtotal = Double.parseDouble(numericSubtotalStr);
         }
 
