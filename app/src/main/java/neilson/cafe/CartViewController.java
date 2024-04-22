@@ -1,10 +1,17 @@
 package neilson.cafe;
 
 import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,7 +21,9 @@ import java.util.Map;
  */
 public class CartViewController extends AppCompatActivity {
     private CafeViewController app;
-    private Order order;
+    private CafeMain main = CafeMain.getInstance();
+
+    private Order order = main.getCurrentOrder();
 
 
     @Override
@@ -25,7 +34,68 @@ public class CartViewController extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("Current Order");
 
+        TextView textView = (TextView) findViewById(R.id.order_num_text);
+        textView.append(Integer.toString(order.getOrderNumber()));
+
+        updateTotal();
+
+
+        RecyclerView recyclerView = findViewById(R.id.cart_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<MenuItem> dataList = new ArrayList<>(order.getCart().keySet()); // load your data
+        CartItemAdapter adapter = new CartItemAdapter(dataList);
+        recyclerView.setAdapter(adapter);
+
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Remove item from your data set
+                int position = viewHolder.getAdapterPosition(); // get position which is swipe
+                if (direction == ItemTouchHelper.LEFT) {    //if swipe left
+                    MenuItem temp = dataList.get(position);
+                    main.removeItem(temp, order.itemCount(temp));
+                    dataList.remove(position);  //then remove item
+                    adapter.notifyItemRemoved(position); // notify adapter about item removal
+                    updateTotal();
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+
+//        RecyclerView recyclerView = findViewById(R.id.cart_list);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        CartAdapter adapter = new CartAdapter(new ArrayList<>(order.getCart().keySet()));
+
     }
+
+
+    private void updateTotal(){
+
+        TextView textView = (TextView) findViewById(R.id.subtotal_amt);
+        textView.setText("$" + String.format("%.2f", order.getSubtotal()));
+
+         textView = (TextView) findViewById(R.id.tax_amt);
+        textView.setText("$" + String.format("%.2f", order.tax()));
+
+         textView = (TextView) findViewById(R.id.total_amt);
+        textView.setText("$" + String.format("%.2f", order.getTotal()));
+
+        //        subtotalText.setText("$" + String.format("%.2f", order.getSubtotal()));
+//        taxText.setText("$" + String.format("%.2f", order.tax()));
+//        totalText.setText("$" + String.format("%.2f", order.getTotal()));
+    }
+
+
 //    private ObservableMap<MenuItem, Integer> cart;
 
 
