@@ -153,12 +153,16 @@ public class SandwichViewController extends AppCompatActivity {
 
     }
 
+    /**
+     * Sends Sandwich item to main cart.
+     */
     public void onAddtoCartButtonClick(){
         Button addToCart = findViewById(R.id.addToCartButton);
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Sandwich finalSandwich = new Sandwich(sandwich.getBread(), sandwich.getProtein(), sandwich.getAddOns());
+                main.addItem(finalSandwich , 1);
                 sandwich = null;
                 updateSubtotal();
             }

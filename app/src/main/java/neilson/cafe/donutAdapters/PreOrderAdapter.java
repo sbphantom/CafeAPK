@@ -77,6 +77,8 @@ public class PreOrderAdapter extends RecyclerView.Adapter<PreOrderAdapter.PreOrd
     public void remove(int position) {
         preOrders.remove(position);
     }
+
+    public void clearPreOrders(){preOrders.clear();}
     public List<Donut> getPreOrders() {
         return preOrders;
     }
