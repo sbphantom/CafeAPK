@@ -1,5 +1,6 @@
 package neilson.cafe;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +11,9 @@ public class CartItemHolder extends RecyclerView.ViewHolder {
     private CafeMain main = CafeMain.getInstance();
 
     private Order order = main.getCurrentOrder();
+    private Context cartView;
+    private CartItemAdapter.OnButtonClickListener mListener;
+
     MenuItem item;
     TextView name;
     TextView quantity;
@@ -21,10 +25,10 @@ public class CartItemHolder extends RecyclerView.ViewHolder {
     Button increment;
     public CartItemHolder(View itemView){
         super(itemView);
-        name = itemView.findViewById(R.id.item_name);
+        name = itemView.findViewById(R.id.order_number);
         quantity = itemView.findViewById(R.id.item_quantity);
         subtotal = itemView.findViewById(R.id.item_subtotal);
-        subtext = itemView.findViewById(R.id.item_subtext);
+        subtext = itemView.findViewById(R.id.order_subtext);
         decrement = itemView.findViewById(R.id.decrement_button);
         increment = itemView.findViewById(R.id.increment_button);
 
@@ -36,6 +40,9 @@ public class CartItemHolder extends RecyclerView.ViewHolder {
                 // Do something with this item
                 order.removeItem(item, 1);
                 quantity.setText(Integer.toString(order.itemCount(item)));
+                subtotal.setText(String.format("$%.2f", item.price() * order.itemCount(item)));
+                mListener.onButtonClick(position, item);
+
 
 //                Log.d("RecyclerView", "Item " + position + " clicked.");
             }
@@ -49,20 +56,26 @@ public class CartItemHolder extends RecyclerView.ViewHolder {
                 // Do something with this item
                 order.addItem(item, 1);
                 quantity.setText(Integer.toString(order.itemCount(item)));
+                subtotal.setText(String.format("$%.2f", item.price() * order.itemCount(item)));
+                mListener.onButtonClick(position, item);
 
 //                Log.d("RecyclerView", "Item " + position + " clicked.");
             }
         });
     }
 
-    public void bind(MenuItem item){
+    public void bind(MenuItem item, Context context, CartItemAdapter.OnButtonClickListener listner){
         this.item = item;
+        this.mListener=listner;
+        cartView= context;
         name.setText(item.name());
         quantity.setText(Integer.toString(order.itemCount(item)));
-
-        subtotal.setText(String.format("%.2f", item.price() * order.itemCount(item)));
+        subtotal.setText(String.format("$%.2f", item.price() * order.itemCount(item)));
         subtext.setText(item.addOnString());
-    }
+
+
+
+        }
 
 
 

@@ -1,10 +1,15 @@
 package neilson.cafe;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +26,13 @@ import java.util.Map;
  *
  * @author Danny Onuorah
  */
-public class CartViewController extends AppCompatActivity {
+public class CartViewController extends AppCompatActivity implements CartItemAdapter.OnButtonClickListener {
     private CafeViewController app;
     private CafeMain main = CafeMain.getInstance();
 
     private Order order = main.getCurrentOrder();
+    List<MenuItem> dataList;
+    CartItemAdapter adapter;
 
 
     @Override
@@ -37,6 +44,14 @@ public class CartViewController extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onButtonClick(int position, MenuItem item) {
+        updateTotal();
+        if (order.itemCount(item) == -1){
+            dataList.remove(item);
+            adapter.notifyItemRemoved(position);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +80,8 @@ public class CartViewController extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.cart_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<MenuItem> dataList = new ArrayList<>(order.getCart().keySet()); // load your data
-        CartItemAdapter adapter = new CartItemAdapter(dataList);
+        dataList = new ArrayList<>(order.getCart().keySet()); // load your data
+         adapter = new CartItemAdapter(dataList, this, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -98,6 +113,38 @@ public class CartViewController extends AppCompatActivity {
 //        RecyclerView recyclerView = findViewById(R.id.cart_list);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        CartAdapter adapter = new CartAdapter(new ArrayList<>(order.getCart().keySet()));
+
+
+        Button button = (Button) findViewById(R.id.order_button);
+        button.setOnClickListener(v -> {
+            if (order.cartSize() == 0) {
+                Toast.makeText(this, "The cart is empty", Toast.LENGTH_SHORT).show();
+            }
+            else if(order.cartSize() >= 1){
+                new AlertDialog.Builder(CartViewController.this)
+                        .setTitle("Confirmation")
+                        .setMessage("Place your order?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                main.addOrder();
+                                Toast.makeText(CartViewController.this, "Order has been placed", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+            }
+
+
+
+
+
+//            Intent intent = new Intent(CafeViewController.this, CartViewController.class);
+//            startActivity(intent);
+        });
+
 
     }
 
