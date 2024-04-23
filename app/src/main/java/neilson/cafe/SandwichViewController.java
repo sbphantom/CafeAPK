@@ -73,6 +73,7 @@ public class SandwichViewController extends AppCompatActivity {
         subtotalTextNumber = findViewById(R.id.subtotalTextNumber);
         subtotalTextNumber.setFocusable(false);
         subtotalTextNumber.setFocusableInTouchMode(false);
+        onAddtoCartButtonClick();
         //Initilizing the subtotal textfield and making it uneditable by the user.
 
 

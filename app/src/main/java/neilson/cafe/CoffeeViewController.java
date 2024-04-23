@@ -169,6 +169,7 @@ public class CoffeeViewController extends AppCompatActivity {
             public void onClick(View v) {
                 main.addItem(coffee, coffee.getQuantity());
                 coffee = null;
+                updateSubtotal();
             }
         });
 

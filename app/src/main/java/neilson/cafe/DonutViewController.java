@@ -94,7 +94,6 @@ public class DonutViewController extends AppCompatActivity {
         onDeletePreOrderClick();
         onAddToCart();
 
-        setContentView(R.layout.donut_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("Order Donuts");
         setSupportActionBar(toolbar);

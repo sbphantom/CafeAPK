@@ -3,20 +3,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/donut_view"
+    android:id="@+id/donut_view_test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DonutViewController">
+    <include layout="@layout/app_bar_main" />
 
     <ImageView
         android:id="@+id/donutImageView"
         android:layout_width="410dp"
         android:layout_height="129dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cake" />
+        app:srcCompat="@drawable/cake"
+        tools:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
