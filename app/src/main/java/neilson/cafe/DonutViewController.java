@@ -309,6 +309,9 @@ public class DonutViewController extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sends order to the main cart.
+     */
     private void onAddToCart(){
        Button onAddToCartDonut = findViewById(R.id.addToCartDonut);
        onAddToCartDonut.setOnClickListener(new View.OnClickListener() {

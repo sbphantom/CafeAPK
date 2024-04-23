@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Coffee extends MenuItem {
     private CoffeeSize size;
     private ArrayList<CoffeeAddOn> addOns;
-
+    private int quantity;
     /**
      * Coffee constructor with CoffeeSize and ArrayList<CoffeeAddOn>
      */
@@ -26,11 +26,19 @@ public class Coffee extends MenuItem {
     }
 
     /**
+     * sets quantity of coffee
+     * @param quantity
+     */
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+}
+    /**
      * Sets the size of the coffee
      */
     public void setCoffeeSize(CoffeeSize size) {
         this.size = size;
     }
+    public int getQuantity(){return this.quantity;}
 
     /**
      * Adds a coffee addOn
@@ -77,7 +85,7 @@ public class Coffee extends MenuItem {
         for (CoffeeAddOn addOn : addOns) {
             price += addOn.price;
         }
-        return Math.round(price * 100.0) / 100.0;
+        return ( Math.round(price * 100.0) / 100.0 );
     }
 
     /**
@@ -140,5 +148,9 @@ public class Coffee extends MenuItem {
 
     public void setType(CoffeeSize coffeeSize) {
         this.size = coffeeSize;
+    }
+
+    public void setAddOns(ArrayList<CoffeeAddOn> addOns) {
+        this.addOns = addOns;
     }
 }

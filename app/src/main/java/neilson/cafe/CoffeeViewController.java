@@ -7,15 +7,28 @@ package neilson.cafe;
 //
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import neilson.cafe.coffeeAdapters.CoffeeAddOnAdapter;
+import neilson.cafe.coffeeAdapters.CoffeeQuantityAdapter;
+import neilson.cafe.donutAdapters.DonutQuanityAdapter;
+import neilson.cafe.sandwichAdapters.AddOnAdapter;
 //
 
 /**
@@ -25,41 +38,27 @@ import java.util.Optional;
  */
 
 public class CoffeeViewController extends AppCompatActivity {
-    //    @FXML
-//    public ImageView coffeeImage;
-//    @FXML
-//    public Spinner<Integer> coffeeQuantitySpinner;
-//    @FXML
-//    public TextField coffeeSubtotalTextField;
-//    @FXML
-//    public Button addOrderButton;
-//    @FXML
-//    private GridPane coffeeGridPane;
-//    @FXML
-//    public ColumnConstraints coffeeSizeColumn;
-//    @FXML
-//    public ColumnConstraints coffeeAddOnColumn;
-//
-//    private ArrayList<CheckBox> coffeeAddOnOptions = new ArrayList<>();
-//    private ToggleGroup coffeeSizeToggleGroup = new ToggleGroup();
-//
     private CafeMain main = CafeMain.getInstance();
     private Coffee coffee = new Coffee();
-
     private RadioGroup coffeeTypeRadioGroup;
-
+    private ListView coffeeeAddons;
+    private CoffeeAddOnAdapter coffeeAddOnAdapter;
+    private EditText subtotalTextNumber;
+    private Spinner coffeeQuantitySpinner;
+    private CoffeeQuantityAdapter coffeeQuantityAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
         setContentView(R.layout.coffee_view);
         inflateCoffeeRadioButtons();
+        inflateCoffeeAddOns();
+        inflateQuantitySpinner();
+        onAddToCartButton();
+        subtotalTextNumber = findViewById(R.id.subtotalTextCoffee);
+        subtotalTextNumber.setFocusable(false);
+        subtotalTextNumber.setFocusableInTouchMode(false);
 
     }
-
-
-
-
 
     private void inflateCoffeeRadioButtons(){
         coffeeTypeRadioGroup = findViewById(R.id.coffeeTypeRadioGroup);
@@ -78,6 +77,7 @@ public class CoffeeViewController extends AppCompatActivity {
             if (i == 0) {
                 radioButton.setChecked(true);
                 coffee.setCoffeeSize(coffeeSizes[i]);
+                updateSubtotal();
 
             }
         }
@@ -87,139 +87,74 @@ public class CoffeeViewController extends AppCompatActivity {
                 RadioButton selectedRadioButton = findViewById(checkedId);
                 CoffeeSize selectedCoffeeSize = (CoffeeSize) selectedRadioButton.getTag();
                 coffee.setCoffeeSize(selectedCoffeeSize);
-
+                updateSubtotal();
                 Toast.makeText(getApplicationContext(), "Selected Coffee Size: " + selectedCoffeeSize, Toast.LENGTH_SHORT).show();
 
             }
         });
     }
+    private void inflateCoffeeAddOns(){
+        coffeeeAddons = findViewById(R.id.coffeeAddOnListView);
+        List<CoffeeAddOn> addOns = Arrays.asList(CoffeeAddOn.values());
+        coffeeAddOnAdapter = new CoffeeAddOnAdapter(this, addOns, this);
+        coffeeeAddons.setAdapter(coffeeAddOnAdapter);
+
+    }
+
+    private void inflateQuantitySpinner(){
+        coffeeQuantitySpinner = findViewById(R.id.coffeeQuantitySpinner);
+        coffeeQuantityAdapter = new CoffeeQuantityAdapter(this, createQuanityRange());
+
+        coffeeQuantitySpinner.setAdapter(coffeeQuantityAdapter);
+        //AutoSelctes the first item in the list.
+        coffeeQuantitySpinner.setSelection(0);
+        coffeeQuantitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int selectedQuantity = (int) parent.getItemAtPosition(position);
+                coffee.setQuantity(selectedQuantity);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    /**
+     * Create a list of quantity values for the spinner
+     * @return
+     */
+    private List<Integer> createQuanityRange(){
+        List<Integer> values = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            values.add(i);
+        }
+        return values;
+    }
+    public void updateSubtotal(){
+        ArrayList<CoffeeAddOn> addOns= new ArrayList<>(coffeeAddOnAdapter.getSelectedItems());
+        coffee.setAddOns(addOns);
 
 
+        double price = coffee.price() * coffee.getQuantity();
+
+        String formattedSubtotal = String.format("$%.2f", price);
+        subtotalTextNumber.setText(formattedSubtotal);
+        Toast.makeText(this, "Subtotal updated: " + formattedSubtotal, Toast.LENGTH_SHORT).show();
+    }
+
+    private void onAddToCartButton(){
+        Button addToCart = findViewById(R.id.addToCartCoffee);
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.addItem(coffee, coffee.getQuantity());
+                coffee = null;
+            }
+        });
 
 
-//
-//    /**
-//     * Links parent controller to child
-//     *
-//     * @param controller CafeViewController
-//     */
-//    public void setMainController(CafeViewController controller) {
-//        app = controller;
-//    }
-//
-//    /**
-//     * Initializes coffee, coffee size, and addon buttons
-//     */
-//    public void initialize() {
-//        addCoffeeSizeButtons();
-//        addCoffeeAddOnBoxes();
-//        coffeeQuantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5));
-//        coffeeQuantitySpinner.getValueFactory().setValue(1);
-//        coffeeQuantitySpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
-//            if (coffee != null) updateSubtotal();
-//        });
-//
-//        coffee = new Coffee((CoffeeSize) coffeeSizeToggleGroup.getSelectedToggle().getUserData(), new ArrayList<>());
-//        updateSubtotal();
-//    }
-//
-//    /**
-//     * Creates buttons for coffee sizes
-//     */
-//    private void addCoffeeSizeButtons() {
-//        int row = 1;
-//        for (CoffeeSize size : CoffeeSize.values()) {
-//            RadioButton radioButton = new RadioButton(size.toString());
-//            radioButton.setToggleGroup(coffeeSizeToggleGroup);
-//            radioButton.setUserData(size);
-//
-//            coffeeGridPane.add(radioButton, 0, row);
-//
-//            if (coffeeGridPane.getRowConstraints().size() < row) {
-//                RowConstraints rowConstraints = new RowConstraints();
-//                rowConstraints.setMinHeight(35);
-//                rowConstraints.setPrefHeight(35);
-//                rowConstraints.setVgrow(Priority.SOMETIMES);
-//                coffeeGridPane.getRowConstraints().add(rowConstraints);
-//            }
-//
-//            if (row == 1) {
-//                radioButton.setSelected(true);
-//            }
-//
-//            row++;
-//        }
-//
-//        coffeeSizeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null && coffee != null) {
-//                coffee.setCoffeeSize((CoffeeSize) coffeeSizeToggleGroup.getSelectedToggle().getUserData());
-//                updateSubtotal();
-//            }
-//        });
-//    }
-//
-//    /**
-//     * Creates checkboxes for coffee addons
-//     */
-//    private void addCoffeeAddOnBoxes() {
-//        int row = 1;
-//        for (CoffeeAddOn addOn : CoffeeAddOn.values()) {
-//            CheckBox checkBox = new CheckBox(addOn.toString());
-//            checkBox.setUserData(addOn);
-//            checkBox.setOnAction(event -> {
-//                if (checkBox.isSelected()) {
-//                    coffee.addAddOn((CoffeeAddOn) checkBox.getUserData());
-//                } else {
-//                    coffee.removeAddOn((CoffeeAddOn) checkBox.getUserData());
-//                }
-//                updateSubtotal();
-//            });
-//            coffeeAddOnOptions.add(checkBox);
-//            coffeeGridPane.add(checkBox, 1, row);
-//
-//            if (coffeeGridPane.getRowConstraints().size() <= row) {
-//                RowConstraints rowConstraints = new RowConstraints();
-//                rowConstraints.setMinHeight(35);
-//                rowConstraints.setPrefHeight(35);
-//                rowConstraints.setVgrow(Priority.SOMETIMES);
-//                coffeeGridPane.getRowConstraints().add(rowConstraints);
-//            }
-//            row++;
-//        }
-//    }
-//
-//    /**
-//     * Updates the subtotal text
-//     */
-//    private void updateSubtotal() {
-//        double subtotal = coffee.price() * coffeeQuantitySpinner.getValue();
-//        String formattedSubtotal = String.format("%.2f", subtotal);
-//        coffeeSubtotalTextField.setText("$" + formattedSubtotal);
-//    }
-//
-//    /**
-//     * Adds coffee and quantity to order
-//     */
-//    public void onAddOrderButtonClick() {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Confirmation Dialog");
-//        alert.setHeaderText("Add to Order");
-//        alert.setContentText("Add " + coffeeQuantitySpinner.getValue() + " coffee to order?");
-//
-//        Optional<ButtonType> result = alert.showAndWait();
-//        if (result.isPresent() && result.get() == ButtonType.OK) {
-//            app.addItemToOrder(coffee, coffeeQuantitySpinner.getValue());
-//
-//            coffee = null;
-//
-//            coffeeQuantitySpinner.getValueFactory().setValue(1);
-//            coffeeSizeToggleGroup.selectToggle(coffeeSizeToggleGroup.getToggles().getFirst());
-//            for (CheckBox box : coffeeAddOnOptions) {
-//                box.setSelected(false);
-//            }
-//
-//            coffee = new Coffee((CoffeeSize) coffeeSizeToggleGroup.getSelectedToggle().getUserData(), new ArrayList<>());
-//            updateSubtotal();
-//        }
-//    }
+    }
+
 }

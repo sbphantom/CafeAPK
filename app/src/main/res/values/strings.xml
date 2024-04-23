@@ -31,4 +31,9 @@
     <string name="add_ons">Add-ons:</string>
     <string name="add_to_order">Add to Cart 🛒</string>
 
+    <string name="select_size">Select Size</string>
+    <string name="select_add_ons">Select AddOns</string>
+    <string name="select_quantity">Select Quantity</string>
+    <string name="order_coffee_text">Order a Coffee!</string>
+
 </resources>
