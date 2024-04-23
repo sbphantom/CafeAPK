@@ -15,6 +15,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -27,6 +29,12 @@ import java.util.*;
  * @author Danny Onuorah
  */
 public class HistoryViewController extends AppCompatActivity {
+
+    private CafeViewController app;
+    private CafeMain main = CafeMain.getInstance();
+
+    List<Order> dataList;
+    OrderItemAdapter adapter;
     @Override
     public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -46,6 +54,18 @@ public class HistoryViewController extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
+        RecyclerView recyclerView = findViewById(R.id.order_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dataList = new ArrayList<>(main.getOrderHistory().values()); // load your data
+        adapter = new OrderItemAdapter(dataList, this);
+        recyclerView.setAdapter(adapter);
+
+
+
+
     }
 
 //    @FXML
@@ -78,7 +98,6 @@ public class HistoryViewController extends AppCompatActivity {
 //    private TableView<Map.Entry<MenuItem, Integer>> menuItemTable;
 //
 //    private Stage stage;
-    private CafeViewController app;
 //    private ObservableMap<Integer, Order> history;
     private Order order;
 //    private ObservableMap<MenuItem, Integer> cart;
