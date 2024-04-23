@@ -17,6 +17,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,6 +42,15 @@ import neilson.cafe.sandwichAdapters.AddOnAdapter;
 
 public class CoffeeViewController extends AppCompatActivity {
     private CafeMain main = CafeMain.getInstance();
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private Coffee coffee = new Coffee();
     private RadioGroup coffeeTypeRadioGroup;
     private ListView coffeeeAddons;
@@ -89,6 +101,12 @@ public class CoffeeViewController extends AppCompatActivity {
                 coffee.setCoffeeSize(selectedCoffeeSize);
                 updateSubtotal();
                 Toast.makeText(getApplicationContext(), "Selected Coffee Size: " + selectedCoffeeSize, Toast.LENGTH_SHORT).show();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Order Coffee");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
             }
         });

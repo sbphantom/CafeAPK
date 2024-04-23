@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/history_view"
+    android:id="@+id/donut_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HistoryViewController">
-
+    tools:context=".DonutViewController">
     <include layout="@layout/app_bar_main" />
 
-<TextView
-        android:id="@+id/textView2"
+
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="History View"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="311dp" />
-
+        android:text="Donut View"
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="592dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

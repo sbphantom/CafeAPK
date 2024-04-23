@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".CoffeeViewController">
 
+    <include layout="@layout/app_bar_main" />
     <EditText
         android:id="@+id/subtotalTextCoffee"
         android:layout_width="wrap_content"

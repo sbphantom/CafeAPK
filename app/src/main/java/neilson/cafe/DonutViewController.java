@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 //
@@ -23,6 +25,11 @@ import androidx.appcompat.app.AppCompatActivity;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 //
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -58,12 +65,20 @@ public class DonutViewController extends AppCompatActivity {
     private EditText subtotalText;
     private Button addToOrderButton;
     private DonutQuanityAdapter donutQuanityAdapter;
-    private PreOrderAdapter preOrderAdapter; 
+    private PreOrderAdapter preOrderAdapter;
     private List<Donut> preOrderList = new ArrayList<>();;
     private Donut donut = new Donut();
     private DonutFlavorAdapter flavorAdapter;
 
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +93,16 @@ public class DonutViewController extends AppCompatActivity {
         onAddPreOrderClick();
         onDeletePreOrderClick();
         onAddToCart();
+
+        setContentView(R.layout.donut_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Order Donuts");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
     }
 
     /**
