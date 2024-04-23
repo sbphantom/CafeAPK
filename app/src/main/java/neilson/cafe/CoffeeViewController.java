@@ -7,6 +7,9 @@ package neilson.cafe;
 //
 
 import android.os.Bundle;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,23 +44,57 @@ public class CoffeeViewController extends AppCompatActivity {
 //    private ToggleGroup coffeeSizeToggleGroup = new ToggleGroup();
 //
     private CafeMain main = CafeMain.getInstance();
-    private Coffee coffee;
+    private Coffee coffee = new Coffee();
 
+    private RadioGroup coffeeTypeRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.coffee_view);
+        inflateCoffeeRadioButtons();
 
-
-        System.out.println("- Coffee -");
-        System.out.println(main.getCurrentOrder().getOrderNumber());
-        System.out.println(main.addItem(new Coffee(CoffeeSize.SHORT, new ArrayList<>()), 2));
-        System.out.println(main.getCurrentOrder().getSubtotal());
-        System.out.println(main.getCurrentOrder().tax());
-        System.out.println(main.getCurrentOrder().getTotal());
     }
+
+
+
+
+
+    private void inflateCoffeeRadioButtons(){
+        coffeeTypeRadioGroup = findViewById(R.id.coffeeTypeRadioGroup);
+        CoffeeSize[] coffeeSizes = CoffeeSize.values();
+
+        for(int i= 0; i < coffeeSizes.length;i++){
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setLayoutParams(new RadioGroup.LayoutParams(
+                    RadioGroup.LayoutParams.WRAP_CONTENT,
+                    RadioGroup.LayoutParams.WRAP_CONTENT
+            ));
+            radioButton.setTag(coffeeSizes[i]);
+            radioButton.setText(coffeeSizes[i].toString());
+            coffeeTypeRadioGroup.addView(radioButton);
+
+            if (i == 0) {
+                radioButton.setChecked(true);
+                coffee.setCoffeeSize(coffeeSizes[i]);
+
+            }
+        }
+        coffeeTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton selectedRadioButton = findViewById(checkedId);
+                CoffeeSize selectedCoffeeSize = (CoffeeSize) selectedRadioButton.getTag();
+                coffee.setCoffeeSize(selectedCoffeeSize);
+
+                Toast.makeText(getApplicationContext(), "Selected Coffee Size: " + selectedCoffeeSize, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
 
 
 //

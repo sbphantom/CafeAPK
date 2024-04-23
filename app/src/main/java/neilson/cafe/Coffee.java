@@ -21,6 +21,10 @@ public class Coffee extends MenuItem {
         this.addOns = addOns;
     }
 
+    public Coffee() {
+
+    }
+
     /**
      * Sets the size of the coffee
      */
@@ -134,4 +138,7 @@ public class Coffee extends MenuItem {
         return size + " Coffee with (" + addOnString() + ")";
     }
 
+    public void setType(CoffeeSize coffeeSize) {
+        this.size = coffeeSize;
+    }
 }

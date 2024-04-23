@@ -38,7 +38,6 @@ import java.util.List;
 
 import neilson.cafe.donutAdapters.DonutFlavorAdapter;
 import neilson.cafe.donutAdapters.DonutQuanityAdapter;
-import neilson.cafe.donutAdapters.DonutTypeAdapter;
 import neilson.cafe.donutAdapters.PreOrderAdapter;
 //
 /**
@@ -335,7 +334,7 @@ public class DonutViewController extends AppCompatActivity {
      * @param donut donut to calculate subtotal
      */
     private void updateSubtotal(String operation, Donut donut){
-        subtotalText = findViewById(R.id.subtotalTextDonut);
+        subtotalText = findViewById(R.id.subtotalTextCoffee);
         subtotalText.setFocusable(false);
         subtotalText.setFocusableInTouchMode(false);
         String subtotalStr = subtotalText.getText().toString();
